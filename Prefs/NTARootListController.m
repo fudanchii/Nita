@@ -100,13 +100,6 @@ BOOL enabled = NO;
     self.navigationController.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationController.navigationBar.translucent = NO;
 
-    NSString* language = [[NSLocale preferredLanguages] firstObject];
-
-    if (![language isEqualToString:@"fr"])
-        [self setCellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0] enabled:NO];
-    else
-        [self setCellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0] enabled:YES];
-
 }
 
 - (void)viewDidAppear:(BOOL)animated {

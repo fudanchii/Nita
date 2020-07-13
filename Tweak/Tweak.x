@@ -18,7 +18,7 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 
 		// detect device language and convert current condition to emoji
 		// if ([[[NSLocale preferredLanguages] firstObject] isEqual:@"en"]) {
-			[self enEmojis];
+			[self frEmojis];
 		// } else if ([[[NSLocale preferredLanguages] firstObject] isEqual:@"fr"]) {
 		// 	[self frEmojis];
 		// } else { // if nita doesn't support the device language return the original text
@@ -49,7 +49,7 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 	conditions = [[PDDokdo sharedInstance] currentConditions];
 
 	// Sunny
-	if ([conditions containsString:@"Sun"]) {
+	if ([conditions containsString:@"sun"]) {
 		if ([conditions isEqualToString:@"Sunny"])
 			weatherString = @"☀️";
 		else if ([conditions isEqualToString:@"Mostly Sunny"])
@@ -60,13 +60,18 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 	}
 
 	// Clear
-	if ([conditions containsString:@"Clear"]) {
-		weatherString = @"☀️";
+	if ([conditions containsString:@"clear"]) {
+		if ([conditions isEqualToString:@"Clear"])
+			weatherString = @"☀";
+		else if ([conditions isEqualToString:@"Mostly Clear"])
+			weatherString = @"🌤";
+		else
+			weatherString = @"☀️";
 		return;
 	}
 
 	// Cloudy
-	if ([conditions containsString:@"Cloud"]) {
+	if ([conditions containsString:@"cloud"]) {
 		if ([conditions isEqualToString:@"Cloudy"])
 			weatherString = @"☁️";
 		else if ([conditions isEqualToString:@"Mostly Cloudy"])
@@ -79,9 +84,11 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 	}
 
 	// Rain
-	if ([conditions containsString:@"Showers"] || [conditions containsString:@"Thunder"]) {
+	if ([conditions containsString:@"showers"] || [conditions containsString:@"thunder"]) {
 		if ([conditions isEqualToString:@"Showers"])
 			weatherString = @"🌧";
+		else if ([conditions isEqualToString:@"Thundershowers"])
+			weatherString = @"⛈";
 		else if ([conditions containsString:@"Thunder"])
 			weatherString = @"⛈";
 		else
@@ -90,7 +97,7 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 	}
 
 	// Snow
-	if ([conditions containsString:@"Snow"]) {
+	if ([conditions containsString:@"snow"]) {
 		weatherString = @"🌨";
 		return;
 	}
@@ -101,7 +108,63 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 %new
 - (void)frEmojis {
 
-	AudioServicesPlaySystemSound(1521);
+	conditions = [[PDDokdo sharedInstance] currentConditions];
+
+	// Sunny
+	if ([conditions containsString:@"ensoleillé"]) {
+		if ([conditions isEqualToString:@"Ensoleillé"])
+			weatherString = @"☀️";
+		else if ([conditions isEqualToString:@"Plutôt ensoleillé"])
+			weatherString = @"🌤";
+		else
+			weatherString = @"☀️";
+		return;
+	}
+
+	// Clear
+	if ([conditions containsString:@"dégagé"]) {
+		if ([conditions isEqualToString:@"Dégagé"])
+			weatherString = @"☀";
+		else if ([conditions isEqualToString:@"Ciel plutôt dégagé"])
+			weatherString = @"🌤";
+		else
+			weatherString = @"☀️";
+		return;
+	}
+
+	// Cloudy
+	if ([conditions containsString:@"nuage"]) {
+		if ([conditions isEqualToString:@"Nuageux"])
+			weatherString = @"☁️";
+		else if ([conditions isEqualToString:@"Nuages prédominants"])
+			weatherString = @"🌥";
+		else if ([conditions isEqualToString:@"Peu nuageux"])
+			weatherString = @"🌤";
+		else if ([conditions isEqualToString:@"Quelques nuages"])
+			weatherString = @"🌤";
+		else
+			weatherString = @"☁️";
+		return;
+	}
+
+	// Rain
+	if ([conditions containsString:@"pluie"] || [conditions containsString:@"averses"] || [conditions containsString:@"orage"]) {
+		if ([conditions isEqualToString:@"Averses"])
+			weatherString = @"🌧";
+		if ([conditions isEqualToString:@"Averses orageuses"])
+			weatherString = @"⛈";
+		else if ([conditions containsString:@"Orages"])
+			weatherString = @"⛈";
+		else
+			weatherString = @"🌦";
+		return;
+	}
+
+	// Snow
+	if ([conditions containsString:@"neige"]) {
+		weatherString = @"🌨";
+		return;
+	}
 
 }
 
@@ -194,7 +257,7 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 
     [preferences registerBool:&enabled default:nil forKey:@"Enabled"];
 
-	// Options
+	// What To Display
 	[preferences registerBool:&showEmojiSwitch default:NO forKey:@"showEmoji"];
 	[preferences registerBool:&showTemperatureSwitch default:NO forKey:@"showTemperature"];
 
