@@ -111,7 +111,7 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 	conditions = [[PDDokdo sharedInstance] currentConditions];
 
 	// Sunny
-	if ([conditions containsString:@"ensoleillé"]) {
+	if ([conditions containsString:@"Ensoleillé"] || [conditions containsString:@"ensoleillé"]) {
 		if ([conditions isEqualToString:@"Ensoleillé"])
 			weatherString = @"☀️";
 		else if ([conditions isEqualToString:@"Plutôt ensoleillé"])
@@ -122,7 +122,7 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 	}
 
 	// Clear
-	if ([conditions containsString:@"dégagé"]) {
+	if ([conditions containsString:@"Dégagé"] || [conditions containsString:@"dégagé"]) {
 		if ([conditions isEqualToString:@"Dégagé"])
 			weatherString = @"☀";
 		else if ([conditions isEqualToString:@"Ciel plutôt dégagé"])
@@ -133,14 +133,14 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 	}
 
 	// Cloudy
-	if ([conditions containsString:@"nuage"]) {
+	if ([conditions containsString:@"Nuage"] || [conditions containsString:@"nuage"] || [conditions containsString:@"Belles éclaircies"]) {
 		if ([conditions isEqualToString:@"Nuageux"])
 			weatherString = @"☁️";
 		else if ([conditions isEqualToString:@"Nuages prédominants"])
 			weatherString = @"🌥";
-		else if ([conditions isEqualToString:@"Peu nuageux"])
-			weatherString = @"🌤";
 		else if ([conditions isEqualToString:@"Quelques nuages"])
+			weatherString = @"🌤";
+		else if  ([conditions isEqualToString:@"Belles éclaircies"])
 			weatherString = @"🌤";
 		else
 			weatherString = @"☁️";
@@ -148,12 +148,19 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 	}
 
 	// Rain
-	if ([conditions containsString:@"pluie"] || [conditions containsString:@"averses"] || [conditions containsString:@"orage"]) {
+	if ([conditions containsString:@"pluie"] || [conditions containsString:@"Pluie"] || [conditions containsString:@"averses"] || [conditions containsString:@"Averses"]) {
 		if ([conditions isEqualToString:@"Averses"])
 			weatherString = @"🌧";
 		if ([conditions isEqualToString:@"Averses orageuses"])
 			weatherString = @"⛈";
-		else if ([conditions containsString:@"Orages"])
+		else
+			weatherString = @"🌦";
+		return;
+	}
+
+	// Thunderstorms
+	if ([conditions containsString:@"Orage"]) {
+		if ([conditions containsString:@"Orages"])
 			weatherString = @"⛈";
 		else
 			weatherString = @"🌦";
@@ -161,7 +168,7 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 	}
 
 	// Snow
-	if ([conditions containsString:@"neige"]) {
+	if ([conditions containsString:@"Neige"] || [conditions containsString:@"neige"]) {
 		weatherString = @"🌨";
 		return;
 	}
