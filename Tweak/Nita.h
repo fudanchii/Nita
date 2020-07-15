@@ -8,9 +8,12 @@ BOOL dpkgInvalid = NO;
 
 extern BOOL enabled;
 
-// Options
-BOOL showEmojiSwitch = NO;
+// Visibility
+BOOL showEmojiSwitch = YES;
 BOOL showTemperatureSwitch = NO;
+
+// Miscellaneous
+BOOL hideBreadcrumbsSwitch = YES;
 
 // Data Refreshing
 BOOL refreshWeatherDataControlCenterSwitch = YES;

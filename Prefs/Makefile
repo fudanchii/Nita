@@ -1,8 +1,6 @@
 ARCHS = arm64 arm64e
 TARGET = iphone:clang::11.2
 
-GO_EASY_ON_ME = 1
-
 include $(THEOS)/makefiles/common.mk
 
 BUNDLE_NAME = NitaPrefs

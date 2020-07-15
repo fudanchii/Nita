@@ -68,8 +68,8 @@
 		UIImageView *avatarViewOne = [[UIImageView alloc] initWithFrame:CGRectMake(15, 9.33333, 38, 38)];
 		UIImageView *avatarViewTwo = [[UIImageView alloc] initWithFrame:CGRectMake(15, 9.33333, 38, 38)];
 
-		UIImage *avatarImageOne = [UIImage imageNamed:[NSString stringWithFormat:@"/Library/PreferenceBundles/DressPrefs.bundle/%@.png", specifier.properties[@"firstAccount"]]];
-		UIImage *avatarImageTwo = [UIImage imageNamed:[NSString stringWithFormat:@"/Library/PreferenceBundles/DressPrefs.bundle/%@.png", specifier.properties[@"secondAccount"]]];
+		UIImage *avatarImageOne = [UIImage imageNamed:[NSString stringWithFormat:@"/Library/PreferenceBundles/NitaPrefs.bundle/%@.png", specifier.properties[@"firstAccount"]]];
+		UIImage *avatarImageTwo = [UIImage imageNamed:[NSString stringWithFormat:@"/Library/PreferenceBundles/NitaPrefs.bundle/%@.png", specifier.properties[@"secondAccount"]]];
 
 		[avatarViewOne setImage:avatarImageOne];
 		[avatarViewTwo setImage:avatarImageTwo];

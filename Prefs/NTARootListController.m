@@ -98,7 +98,13 @@ BOOL enabled = NO;
     self.navigationController.navigationController.navigationBar.barTintColor = [UIColor colorWithRed: 0.76 green: 0.67 blue: 1.00 alpha: 1.00];
     [self.navigationController.navigationController.navigationBar setShadowImage: [UIImage new]];
     self.navigationController.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.navigationController.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationController.navigationBar.translucent = YES;
+
+    NSLocale* locale = [NSLocale autoupdatingCurrentLocale];
+	NSString* code = locale.languageCode;
+
+    if (![code containsString:@"en"] && ![code containsString:@"fr"])
+        [self setCellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0] enabled:NO];
 
 }
 

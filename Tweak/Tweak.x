@@ -2,8 +2,9 @@
 
 BOOL enabled;
 
-NSString* conditions;
+NSString* conditions = nil; // weather condition which will be converted to an emoji
 NSString* weatherString = nil; // emoji will be assigned to this variable
+NSString* languageCode = nil; // language code to detect device language
 
 %group Nita
 
@@ -13,20 +14,15 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 
 	%orig; // making sure originalText is being initialized before comparing it
 
-	// there might be a better way to do this but it works
-	if (!([[self originalText] containsString:@":"] || [[self originalText] containsString:@"%"] || [[self originalText] containsString:@"3G"] || [[self originalText] containsString:@"4G"] || [[self originalText] containsString:@"LTE"]) && enabled) {
+	if (!([[self originalText] containsString:@":"] || [[self originalText] containsString:@"%"] || [[self originalText] containsString:@"3G"] || [[self originalText] containsString:@"4G"] || [[self originalText] containsString:@"5G"] || [[self originalText] containsString:@"LTE"])) {
 
 		// detect device language and convert current condition to emoji
-		// if ([[[NSLocale preferredLanguages] firstObject] isEqual:@"en"]) {
+		if ([languageCode containsString:@"en"])
+			[self enEmojis];
+		else if ([languageCode containsString:@"fr"])
 			[self frEmojis];
-		// } else if ([[[NSLocale preferredLanguages] firstObject] isEqual:@"fr"]) {
-		// 	[self frEmojis];
-		// } else { // if nita doesn't support the device language return the original text
-		// 	%orig;
-		// 	return;
-		// }
 
-		// assign the emoji (and optionally the temperature) to the carrier
+		// assign the emoji (and optionally the temperature or onyl text) to the carrier
 		if (showEmojiSwitch && !showTemperatureSwitch)
 			%orig(weatherString);
 		else if (showEmojiSwitch && showTemperatureSwitch)
@@ -42,6 +38,7 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 }
 
 // libPDDokdo currently only returns the condition in the language which the device has set so i have to convert it myself
+
 // English
 %new
 - (void)enEmojis {
@@ -49,7 +46,7 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 	conditions = [[PDDokdo sharedInstance] currentConditions];
 
 	// Sunny
-	if ([conditions containsString:@"sun"]) {
+	if ([conditions containsString:@"sun"] || [conditions containsString:@"Sun"]) {
 		if ([conditions isEqualToString:@"Sunny"])
 			weatherString = @"☀️";
 		else if ([conditions isEqualToString:@"Mostly Sunny"])
@@ -60,7 +57,7 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 	}
 
 	// Clear
-	if ([conditions containsString:@"clear"]) {
+	if ([conditions containsString:@"clear"] || [conditions containsString:@"Clear"]) {
 		if ([conditions isEqualToString:@"Clear"])
 			weatherString = @"☀";
 		else if ([conditions isEqualToString:@"Mostly Clear"])
@@ -71,7 +68,7 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 	}
 
 	// Cloudy
-	if ([conditions containsString:@"cloud"]) {
+	if ([conditions containsString:@"cloud"] || [conditions containsString:@"Cloud"]) {
 		if ([conditions isEqualToString:@"Cloudy"])
 			weatherString = @"☁️";
 		else if ([conditions isEqualToString:@"Mostly Cloudy"])
@@ -84,7 +81,7 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 	}
 
 	// Rain
-	if ([conditions containsString:@"showers"] || [conditions containsString:@"thunder"]) {
+	if ([conditions containsString:@"showers"] || [conditions containsString:@"thunder"] || [conditions containsString:@"Showers"] || [conditions containsString:@"Thunder"]) {
 		if ([conditions isEqualToString:@"Showers"])
 			weatherString = @"🌧";
 		else if ([conditions isEqualToString:@"Thundershowers"])
@@ -97,7 +94,7 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 	}
 
 	// Snow
-	if ([conditions containsString:@"snow"]) {
+	if ([conditions containsString:@"snow"] || [conditions containsString:@"Snow"]) {
 		weatherString = @"🌨";
 		return;
 	}
@@ -151,8 +148,10 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 	if ([conditions containsString:@"pluie"] || [conditions containsString:@"Pluie"] || [conditions containsString:@"averses"] || [conditions containsString:@"Averses"]) {
 		if ([conditions isEqualToString:@"Averses"])
 			weatherString = @"🌧";
-		if ([conditions isEqualToString:@"Averses orageuses"])
+		else if ([conditions isEqualToString:@"Averses orageuses"])
 			weatherString = @"⛈";
+		else if ([conditions isEqualToString:@"Pluie"])
+			weatherString = @"🌧";
 		else
 			weatherString = @"🌦";
 		return;
@@ -172,6 +171,34 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 		weatherString = @"🌨";
 		return;
 	}
+
+}
+
+%end
+
+// Hide Breadcrumbs
+
+%hook SBDeviceApplicationSceneStatusBarBreadcrumbProvider // iOS 13
+
++ (BOOL)_shouldAddBreadcrumbToActivatingSceneEntity:(id)arg1 sceneHandle:(id)arg2 withTransitionContext:(id)arg3 {
+
+	if (hideBreadcrumbsSwitch)
+		return NO;
+	else
+		return %orig;
+
+}
+
+%end
+
+%hook SBMainDisplaySceneManager // iOS 12
+
+- (BOOL)_shouldBreadcrumbApplicationSceneEntity:(id)arg1 withTransitionContext:(id)arg2 {
+
+	if (hideBreadcrumbsSwitch)
+		return NO;
+	else
+		return %orig;
 
 }
 
@@ -232,9 +259,9 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 		message:@"Seriously? Pirating a free Tweak is awful!\nPiracy repo's Tweaks could contain Malware if you didn't know that, so go ahead and get Nita from the official Source https://repo.litten.love/.\nIf you're seeing this but you got it from the official source then make sure to add https://repo.litten.love to Cydia or Sileo."
 		preferredStyle:UIAlertControllerStyleAlert];
 
-		UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Okey" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+		UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Okey" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
 
-			UIApplication *application = [UIApplication sharedApplication];
+			UIApplication* application = [UIApplication sharedApplication];
 			[application openURL:[NSURL URLWithString:@"https://repo.litten.love/"] options:@{} completionHandler:nil];
 
 	}];
@@ -264,9 +291,12 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 
     [preferences registerBool:&enabled default:nil forKey:@"Enabled"];
 
-	// What To Display
-	[preferences registerBool:&showEmojiSwitch default:NO forKey:@"showEmoji"];
+	// Visibility
+	[preferences registerBool:&showEmojiSwitch default:YES forKey:@"showEmoji"];
 	[preferences registerBool:&showTemperatureSwitch default:NO forKey:@"showTemperature"];
+
+	// Miscellaneous
+	[preferences registerBool:&hideBreadcrumbsSwitch default:YES forKey:@"hideBreadcrumbs"];
 
 	// Data Refreshing
 	[preferences registerBool:&refreshWeatherDataControlCenterSwitch default:YES forKey:@"refreshWeatherDataControlCenter"];
@@ -280,6 +310,8 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
         );
 
         if (ok && [@"litten" isEqualToString:@"litten"]) {
+			NSLocale* locale = [NSLocale autoupdatingCurrentLocale];
+			languageCode = locale.languageCode;
 			%init(Nita);
             return;
         } else {
