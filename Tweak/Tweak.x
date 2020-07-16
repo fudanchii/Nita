@@ -289,8 +289,8 @@ NSString* languageCode = nil; // language code to detect device language
 	}
 
 	// Tornado
-	if ([conditions containsString:@""] || [conditions containsString:@""]) {
-		if ([conditions isEqualToString:@""])
+	if ([conditions containsString:@"wirbelsturm"] || [conditions containsString:@"Wirbelsturm"]) {
+		if ([conditions isEqualToString:@"Wirbelsturm"])
 			weatherString = @"🌪";
 		else
 			weatherString = @"🌪";
