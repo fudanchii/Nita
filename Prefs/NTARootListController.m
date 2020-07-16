@@ -3,6 +3,7 @@
 #import "../Tweak/Nita.h"
 
 BOOL enabled = NO;
+BOOL hasSeenLanguageCompatibilityAlert = NO;
 
 @implementation NTARootListController
 
@@ -11,7 +12,7 @@ BOOL enabled = NO;
     self = [super init];
 
     if (self) {
-        NTAAppearanceSettings *appearanceSettings = [[NTAAppearanceSettings alloc] init];
+        NTAAppearanceSettings* appearanceSettings = [[NTAAppearanceSettings alloc] init];
         self.hb_appearanceSettings = appearanceSettings;
         self.enableSwitch = [[UISwitch alloc] init];
         self.enableSwitch.onTintColor = [UIColor colorWithRed: 0.64 green: 0.49 blue: 1.00 alpha: 1.00];
@@ -81,6 +82,14 @@ BOOL enabled = NO;
     ]];
 
     _table.tableHeaderView = self.headerView;
+
+    NSLocale* locale = [NSLocale autoupdatingCurrentLocale];
+	NSString* code = locale.languageCode;
+
+    if (![code containsString:@"en"] && ![code containsString:@"fr"] && ![code containsString:@"de"] && !hasSeenLanguageCompatibilityAlert) {
+        [self incompatibleLanguageAlert];
+    }
+
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -99,6 +108,9 @@ BOOL enabled = NO;
     [self.navigationController.navigationController.navigationBar setShadowImage: [UIImage new]];
     self.navigationController.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationController.navigationBar.translucent = YES;
+
+    HBPreferences *preferences = [[HBPreferences alloc] initWithIdentifier: @"love.litten.nitapreferences"];
+    hasSeenLanguageCompatibilityAlert = [preferences objectForKey:@"hasSeenLanguageCompatibilityAlert"];
 
     NSLocale* locale = [NSLocale autoupdatingCurrentLocale];
 	NSString* code = locale.languageCode;
@@ -194,6 +206,34 @@ BOOL enabled = NO;
         [[self enableSwitch] setOn:YES animated:YES];
     else if ([[preferences objectForKey:@"Enabled"] isEqual:@(NO)])
         [[self enableSwitch] setOn:NO animated:YES];
+
+}
+
+- (void)incompatibleLanguageAlert {
+
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Nita"
+	message:@"I'm sorry, but your language isn't supported yet to use the Emoji feature 🙍🏼‍♀️ You can still use Temperature and/or only text though! 😅\n\n Want to help making it compatible? Then give the source code a look and add your own language method 😊"
+	preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction *githubAction = [UIAlertAction actionWithTitle:@"GitHub" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+
+        UIApplication* application = [UIApplication sharedApplication];
+		[application openURL:[NSURL URLWithString:@"https://github.com/Litteeen/Nita"] options:@{} completionHandler:nil];
+
+	}];
+
+	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Don't show again" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+
+        hasSeenLanguageCompatibilityAlert = YES;
+        HBPreferences* preferences = [[HBPreferences alloc] initWithIdentifier: @"love.litten.nitapreferences"];
+        [preferences setBool:hasSeenLanguageCompatibilityAlert forKey:@"hasSeenLanguageCompatibilityAlert"];
+
+	}];
+
+	[alertController addAction:githubAction];
+    [alertController addAction:cancelAction];
+
+	[self presentViewController:alertController animated:YES completion:nil];
 
 }
 
