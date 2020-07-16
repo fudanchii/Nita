@@ -103,7 +103,7 @@ BOOL enabled = NO;
     NSLocale* locale = [NSLocale autoupdatingCurrentLocale];
 	NSString* code = locale.languageCode;
 
-    if (![code containsString:@"en"] && ![code containsString:@"fr"])
+    if (![code containsString:@"en"] && ![code containsString:@"fr"] && ![code containsString:@"de"])
         [self setCellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0] enabled:NO];
 
 }

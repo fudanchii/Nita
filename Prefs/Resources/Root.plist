@@ -155,23 +155,19 @@
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
-			<key>footerText</key>
-			<string>Thanks kritanta For The Pretty Twitter Cells</string>
-			<key>isStaticText</key>
-			<true/>
+			<key>label</key>
+			<string>Contributions</string>
 		</dict>
 		<dict>
-            <key>cell</key>
-            <string>PSButtonCell</string>
-            <key>label</key>
-            <string>@_kritanta</string>
-            <key>cellClass</key>
-            <string>HBTwitterCell</string>
-            <key>label</key>
-            <string>kritanta</string>
-            <key>user</key>
-            <string>_kritanta</string>
-        </dict>
+ 			<key>cell</key>
+ 			<string>PSLinkCell</string>
+ 			<key>label</key>
+ 			<string>Contributors</string>
+ 			<key>detail</key>
+ 			<string>NTAContributorsSubPrefsListController</string>
+ 			<key>NTASub</key>
+ 			<string>contributorsSub</string>
+ 		</dict>
 
 		<dict>
 			<key>cell</key>

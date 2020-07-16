@@ -21,6 +21,8 @@ NSString* languageCode = nil; // language code to detect device language
 			[self enEmojis];
 		else if ([languageCode containsString:@"fr"])
 			[self frEmojis];
+		else if ([languageCode containsString:@"de"])
+			[self deEmojis];
 
 		// assign the emoji (and optionally the temperature or onyl text) to the carrier
 		if (showEmojiSwitch && !showTemperatureSwitch)
@@ -81,12 +83,12 @@ NSString* languageCode = nil; // language code to detect device language
 	}
 
 	// Rain
-	if ([conditions containsString:@"showers"] || [conditions containsString:@"thunder"] || [conditions containsString:@"Showers"] || [conditions containsString:@"Thunder"]) {
+	if ([conditions containsString:@"showers"] || [conditions containsString:@"Showers"] || [conditions containsString:@"rain"] || [conditions containsString:@"Rain"]) {
 		if ([conditions isEqualToString:@"Showers"])
 			weatherString = @"🌧";
+		else if ([conditions containsString:@"Rain"] || [conditions containsString:@"rain"])
+			weatherString = @"🌧";
 		else if ([conditions isEqualToString:@"Thundershowers"])
-			weatherString = @"⛈";
-		else if ([conditions containsString:@"Thunder"])
 			weatherString = @"⛈";
 		else
 			weatherString = @"🌦";
@@ -96,6 +98,35 @@ NSString* languageCode = nil; // language code to detect device language
 	// Snow
 	if ([conditions containsString:@"snow"] || [conditions containsString:@"Snow"]) {
 		weatherString = @"🌨";
+		return;
+	}
+
+	// Thunderstorms
+	if ([conditions containsString:@"thunder"] || [conditions containsString:@"Thunder"]) {
+		if ([conditions isEqualToString:@"Thundershowers"])
+			weatherString = @"⛈";
+		else if ([conditions containsString:@"Thunder"])
+			weatherString = @"⛈";
+		else
+			weatherString = @"⛈";
+		return;
+	}
+
+	// Tornado
+	if ([conditions containsString:@"tornado"] || [conditions containsString:@"Tornado"]) {
+		if ([conditions isEqualToString:@"Tornado"])
+			weatherString = @"🌪";
+		else
+			weatherString = @"🌪";
+		return;
+	}
+
+	// Fog
+	if ([conditions containsString:@"fog"] || [conditions containsString:@"Fog"]) {
+		if ([conditions isEqualToString:@"Foggy"])
+			weatherString = @"🌫";
+		else
+			weatherString = @"🌫";
 		return;
 	}
 
@@ -157,18 +188,121 @@ NSString* languageCode = nil; // language code to detect device language
 		return;
 	}
 
+	// Snow
+	if ([conditions containsString:@"Neige"] || [conditions containsString:@"neige"]) {
+		weatherString = @"🌨";
+		return;
+	}
+
 	// Thunderstorms
 	if ([conditions containsString:@"Orage"]) {
 		if ([conditions containsString:@"Orages"])
 			weatherString = @"⛈";
+		else
+			weatherString = @"⛈";
+		return;
+	}
+
+	// Tornado
+	if ([conditions containsString:@"tornade"] || [conditions containsString:@"Tornade"]) {
+		if ([conditions isEqualToString:@"Tornade"])
+			weatherString = @"🌪";
+		else
+			weatherString = @"🌪";
+		return;
+	}
+
+	// Fog
+	if ([conditions containsString:@""] || [conditions containsString:@""]) {
+		if ([conditions isEqualToString:@""])
+			weatherString = @"🌫";
+		else
+			weatherString = @"🌫";
+		return;
+	}
+
+}
+
+// German
+%new
+- (void)deEmojis {
+
+	conditions = [[PDDokdo sharedInstance] currentConditions];
+
+	// Sunny
+	if ([conditions containsString:@"sonn"] || [conditions containsString:@"Sonn"]) {
+		if ([conditions isEqualToString:@"Sonnig"])
+			weatherString = @"☀️";
+		else if ([conditions isEqualToString:@"Meist sonnig"])
+			weatherString = @"🌤";
+		else
+			weatherString = @"☀️";
+		return;
+	}
+
+	// Clear
+	if ([conditions containsString:@"wolken"] || [conditions containsString:@"Wolken"]) {
+		if ([conditions isEqualToString:@"Wolkenlos"])
+			weatherString = @"☀";
+		else if ([conditions isEqualToString:@"Meist Wolkenlos"])
+			weatherString = @"🌤";
+		else
+			weatherString = @"☀️";
+		return;
+	}
+
+	// Cloudy
+	if ([conditions containsString:@"wölkt"]) {
+		if ([conditions isEqualToString:@"Bewölkt"])
+			weatherString = @"☁️";
+		else if ([conditions isEqualToString:@"Meist bewölkt"])
+			weatherString = @"🌥";
+		else if ([conditions isEqualToString:@"Teilweise bewölkt"])
+			weatherString = @"🌤";
+		else
+			weatherString = @"☁️";
+		return;
+	}
+
+	// Rain
+	if ([conditions containsString:@""] || [conditions containsString:@""] || [conditions containsString:@""] || [conditions containsString:@""]) {
+		if ([conditions isEqualToString:@""])
+			weatherString = @"🌧";
 		else
 			weatherString = @"🌦";
 		return;
 	}
 
 	// Snow
-	if ([conditions containsString:@"Neige"] || [conditions containsString:@"neige"]) {
+	if ([conditions containsString:@""] || [conditions containsString:@""]) {
 		weatherString = @"🌨";
+		return;
+	}
+
+	// Thunderstorms
+	if ([conditions containsString:@""]) {
+		if ([conditions containsString:@""])
+			weatherString = @"⛈";
+		else
+			weatherString = @"⛈";
+		return;
+	}
+
+	// Tornado
+	if ([conditions containsString:@""] || [conditions containsString:@""]) {
+		if ([conditions isEqualToString:@""])
+			weatherString = @"🌪";
+		else
+			weatherString = @"🌪";
+		return;
+	}
+
+	// Fog
+	if ([conditions containsString:@""] || [conditions containsString:@""]) {
+		if ([conditions isEqualToString:@""])
+			weatherString = @"🌫";
+		else
+			weatherString = @"🌫";
 		return;
 	}
 
@@ -254,8 +388,9 @@ NSString* languageCode = nil; // language code to detect device language
 - (void)viewDidAppear:(BOOL)animated {
 
     %orig;
+	
     if (!dpkgInvalid) return;
-		UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Nita"
+		UIAlertController* alertController = [UIAlertController alertControllerWithTitle:@"Nita"
 		message:@"Seriously? Pirating a free Tweak is awful!\nPiracy repo's Tweaks could contain Malware if you didn't know that, so go ahead and get Nita from the official Source https://repo.litten.love/.\nIf you're seeing this but you got it from the official source then make sure to add https://repo.litten.love to Cydia or Sileo."
 		preferredStyle:UIAlertControllerStyleAlert];
 

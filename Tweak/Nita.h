@@ -24,6 +24,7 @@ BOOL refreshWeatherDataDisplayWakeSwitch = YES;
 @property(nonatomic, copy)NSString* originalText;
 - (void)enEmojis;
 - (void)frEmojis;
+- (void)deEmojis;
 @end
 
 @interface SBIconController : UIViewController
