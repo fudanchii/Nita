@@ -122,8 +122,8 @@ NSString* languageCode = nil; // language code to detect device language
 	}
 
 	// Fog
-	if ([conditions containsString:@""] || [conditions containsString:@""]) {
-		if ([conditions isEqualToString:@""])
+	if ([conditions containsString:@"fog"] || [conditions containsString:@"Fog"]) {
+		if ([conditions containsString:@"Fog"])
 			weatherString = @"🌫";
 		else
 			weatherString = @"🌫";
@@ -195,7 +195,7 @@ NSString* languageCode = nil; // language code to detect device language
 	}
 
 	// Thunderstorms
-	if ([conditions containsString:@"Orage"]) {
+	if ([conditions containsString:@"orage"] || [conditions containsString:@"Orage"]) {
 		if ([conditions containsString:@"Orages"])
 			weatherString = @"⛈";
 		else
@@ -213,11 +213,8 @@ NSString* languageCode = nil; // language code to detect device language
 	}
 
 	// Fog
-	if ([conditions containsString:@""] || [conditions containsString:@""]) {
-		if ([conditions isEqualToString:@""])
-			weatherString = @"🌫";
-		else
-			weatherString = @"🌫";
+	if ([conditions containsString:@"brumeux"] || [conditions containsString:@"Brumeux"]) {
+		weatherString = @"🌫";
 		return;
 	}
 
@@ -265,8 +262,10 @@ NSString* languageCode = nil; // language code to detect device language
 	}
 
 	// Rain
-	if ([conditions containsString:@""] || [conditions containsString:@""] || [conditions containsString:@""] || [conditions containsString:@""]) {
-		if ([conditions isEqualToString:@""])
+	if ([conditions containsString:@"regen"] || [conditions containsString:@"Regen"] || [conditions containsString:@"schauer"] || [conditions containsString:@"Schauer"]) {
+		if ([conditions isEqualToString:@"Regen"])
+			weatherString = @"🌧";
+		else if ([conditions isEqualToString:@"Schauer"])
 			weatherString = @"🌧";
 		else
 			weatherString = @"🌦";
@@ -274,14 +273,14 @@ NSString* languageCode = nil; // language code to detect device language
 	}
 
 	// Snow
-	if ([conditions containsString:@""] || [conditions containsString:@""]) {
+	if ([conditions containsString:@"schnee"] || [conditions containsString:@"Schnee"]) {
 		weatherString = @"🌨";
 		return;
 	}
 
 	// Thunderstorms
-	if ([conditions containsString:@""]) {
-		if ([conditions containsString:@""])
+	if ([conditions containsString:@"gewitter"] || [conditions containsString:@"Gewitter"]) {
+		if ([conditions containsString:@"Gewitter"])
 			weatherString = @"⛈";
 		else
 			weatherString = @"⛈";
@@ -298,8 +297,8 @@ NSString* languageCode = nil; // language code to detect device language
 	}
 
 	// Fog
-	if ([conditions containsString:@""] || [conditions containsString:@""]) {
-		if ([conditions isEqualToString:@""])
+	if ([conditions containsString:@"nebel"] || [conditions containsString:@"Nebel"]) {
+		if ([conditions isEqualToString:@"Nebel"])
 			weatherString = @"🌫";
 		else
 			weatherString = @"🌫";
