@@ -122,8 +122,8 @@ NSString* languageCode = nil; // language code to detect device language
 	}
 
 	// Fog
-	if ([conditions containsString:@"fog"] || [conditions containsString:@"Fog"]) {
-		if ([conditions isEqualToString:@"Foggy"])
+	if ([conditions containsString:@""] || [conditions containsString:@""]) {
+		if ([conditions isEqualToString:@""])
 			weatherString = @"🌫";
 		else
 			weatherString = @"🌫";
@@ -189,7 +189,7 @@ NSString* languageCode = nil; // language code to detect device language
 	}
 
 	// Snow
-	if ([conditions containsString:@"Neige"] || [conditions containsString:@"neige"]) {
+	if ([conditions containsString:@"neige"] || [conditions containsString:@"Neige"]) {
 		weatherString = @"🌨";
 		return;
 	}
