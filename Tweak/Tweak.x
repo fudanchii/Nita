@@ -24,7 +24,7 @@ NSString* languageCode = nil; // language code to detect device language
 		else if ([languageCode containsString:@"de"])
 			[self deEmojis];
 
-		// assign the emoji (and optionally the temperature or onyl text) to the carrier
+		// assign the emoji (and optionally the temperature or only text) to the carrier
 		if (showEmojiSwitch && !showTemperatureSwitch)
 			%orig(weatherString);
 		else if (showEmojiSwitch && showTemperatureSwitch)

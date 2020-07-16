@@ -1,6 +1,6 @@
 Package: love.litten.nita
 Name: Nita ☀️
-Depends: mobilesubstrate, preferenceloader, ws.hbang.common (>= 1.14), firmware (>= 12.0), com.peterdev.libpddokdo
+Depends: mobilesubstrate, preferenceloader, ws.hbang.common (>= 1.14), firmware (>= 13.0), com.peterdev.libpddokdo
 Architecture: iphoneos-arm
 Description: Ensoleillé
 Maintainer: Litten <hiya@litten.love>
@@ -9,5 +9,5 @@ Section: Tweaks
 Depiction: https://repo.litten.love/depictions/nta/index.html
 SileoDepiction: https://repo.litten.love/depictions/nta/nta.json
 Icon: https://repo.litten.love/depictions/nta/assets/icon.png
-Version: 1.0-181+debug
-Installed-Size: 1096
+Version: 1.0
+Installed-Size: 664
