@@ -24,7 +24,7 @@ BOOL hasSeenLanguageCompatibilityAlert = NO;
         self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,10,10)];
         self.titleLabel.font = [UIFont boldSystemFontOfSize:17];
         self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        self.titleLabel.text = @"1.0";
+        self.titleLabel.text = @"1.1.1";
         self.titleLabel.textColor = [UIColor whiteColor];
         self.titleLabel.textAlignment = NSTextAlignmentCenter;
         [self.navigationItem.titleView addSubview:self.titleLabel];
@@ -212,15 +212,8 @@ BOOL hasSeenLanguageCompatibilityAlert = NO;
 - (void)incompatibleLanguageAlert {
 
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Nita"
-	message:@"I'm sorry, but your language isn't supported yet to use the Emoji feature 🙍🏼‍♀️ You can still use Temperature and/or only text though! 😅\n\n Want to help making it compatible? Then give the source code a look and add your own language method 😊"
+	message:@"I'm sorry, but your language isn't supported yet to use the Emoji feature 🙍🏼‍♀️ You can still use Temperature and/or only text though! 😅"
 	preferredStyle:UIAlertControllerStyleAlert];
-
-    UIAlertAction *githubAction = [UIAlertAction actionWithTitle:@"GitHub" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
-
-        UIApplication* application = [UIApplication sharedApplication];
-		[application openURL:[NSURL URLWithString:@"https://github.com/Litteeen/Nita"] options:@{} completionHandler:nil];
-
-	}];
 
 	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Don't show again" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
 
@@ -229,8 +222,7 @@ BOOL hasSeenLanguageCompatibilityAlert = NO;
         [preferences setBool:hasSeenLanguageCompatibilityAlert forKey:@"hasSeenLanguageCompatibilityAlert"];
 
 	}];
-
-	[alertController addAction:githubAction];
+    
     [alertController addAction:cancelAction];
 
 	[self presentViewController:alertController animated:YES completion:nil];

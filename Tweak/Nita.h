@@ -9,11 +9,12 @@ BOOL dpkgInvalid = NO;
 extern BOOL enabled;
 
 // Visibility
-BOOL showEmojiSwitch = YES;
+BOOL showEmojiSwitch = NO;
 BOOL showTemperatureSwitch = NO;
 
 // Miscellaneous
 BOOL hideBreadcrumbsSwitch = YES;
+BOOL hideCellularSignalSwitch = YES;
 
 // Data Refreshing
 BOOL refreshWeatherDataControlCenterSwitch = YES;
@@ -25,6 +26,9 @@ BOOL refreshWeatherDataDisplayWakeSwitch = YES;
 - (void)enEmojis;
 - (void)frEmojis;
 - (void)deEmojis;
+@end
+
+@interface _UIStatusBarCellularSignalView : UIView
 @end
 
 @interface SBIconController : UIViewController

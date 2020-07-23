@@ -8,13 +8,26 @@ NSString* languageCode = nil; // language code to detect device language
 
 %group Nita
 
+%hook _UIStatusBarCellularSignalView
+
+- (void)didMoveToWindow {
+
+	if (hideCellularSignalSwitch)
+		[self setHidden:YES];
+	else
+		%orig;
+
+}
+
+%end
+
 %hook _UIStatusBarStringView
 
 - (void)setText:(id)arg1 {
 
 	%orig; // making sure originalText is being initialized before comparing it
 
-	if (!([[self originalText] containsString:@":"] || [[self originalText] containsString:@"%"] || [[self originalText] containsString:@"3G"] || [[self originalText] containsString:@"4G"] || [[self originalText] containsString:@"5G"] || [[self originalText] containsString:@"LTE"])) {
+	if (!([[self originalText] containsString:@":"] || [[self originalText] containsString:@"%"] || [[self originalText] containsString:@"2G"] || [[self originalText] containsString:@"3G"] || [[self originalText] containsString:@"4G"] || [[self originalText] containsString:@"5G"] || [[self originalText] containsString:@"LTE"] || [[self originalText] isEqualToString:@"E"])) {
 
 		// detect device language and convert current condition to emoji
 		if ([languageCode containsString:@"en"])
@@ -34,7 +47,7 @@ NSString* languageCode = nil; // language code to detect device language
 		else
 			%orig(conditions);
 	} else {
-		%orig;
+		return;
 	}
 
 }
@@ -426,11 +439,12 @@ NSString* languageCode = nil; // language code to detect device language
     [preferences registerBool:&enabled default:nil forKey:@"Enabled"];
 
 	// Visibility
-	[preferences registerBool:&showEmojiSwitch default:YES forKey:@"showEmoji"];
+	[preferences registerBool:&showEmojiSwitch default:NO forKey:@"showEmoji"];
 	[preferences registerBool:&showTemperatureSwitch default:NO forKey:@"showTemperature"];
 
 	// Miscellaneous
 	[preferences registerBool:&hideBreadcrumbsSwitch default:YES forKey:@"hideBreadcrumbs"];
+	[preferences registerBool:&hideCellularSignalSwitch default:NO forKey:@"hideCellularSignal"];
 
 	// Data Refreshing
 	[preferences registerBool:&refreshWeatherDataControlCenterSwitch default:YES forKey:@"refreshWeatherDataControlCenter"];
