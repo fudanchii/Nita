@@ -4,8 +4,6 @@
 
 HBPreferences* preferences;
 
-BOOL dpkgInvalid = NO;
-
 extern BOOL enabled;
 
 // Visibility
@@ -29,7 +27,4 @@ BOOL refreshWeatherDataDisplayWakeSwitch = YES;
 @end
 
 @interface _UIStatusBarCellularSignalView : UIView
-@end
-
-@interface SBIconController : UIViewController
 @end

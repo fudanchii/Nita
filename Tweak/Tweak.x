@@ -27,7 +27,7 @@ NSString* languageCode = nil; // language code to detect device language
 
 	%orig; // making sure originalText is being initialized before comparing it
 
-	if (!([[self originalText] containsString:@":"] || [[self originalText] containsString:@"%"] || [[self originalText] containsString:@"2G"] || [[self originalText] containsString:@"3G"] || [[self originalText] containsString:@"4G"] || [[self originalText] containsString:@"5G"] || [[self originalText] containsString:@"LTE"] || [[self originalText] isEqualToString:@"E"])) {
+	if (!([[self originalText] containsString:@":"] || [[self originalText] containsString:@"%"] || [[self originalText] containsString:@"2G"] || [[self originalText] containsString:@"3G"] || [[self originalText] containsString:@"4G"] || [[self originalText] containsString:@"5G"] || [[self originalText] containsString:@"LTE"] || [[self originalText] isEqualToString:@"E"] || [[self originalText] isEqualToString:@"e"])) {
 
 		// detect device language and convert current condition to emoji
 		if ([languageCode containsString:@"en"])
@@ -393,46 +393,7 @@ NSString* languageCode = nil; // language code to detect device language
 
 %end
 
-%group NitaIntegrityFail
-
-%hook SBIconController
-
-- (void)viewDidAppear:(BOOL)animated {
-
-    %orig;
-	
-    if (!dpkgInvalid) return;
-		UIAlertController* alertController = [UIAlertController alertControllerWithTitle:@"Nita"
-		message:@"Seriously? Pirating a free Tweak is awful!\nPiracy repo's Tweaks could contain Malware if you didn't know that, so go ahead and get Nita from the official Source https://repo.litten.love/.\nIf you're seeing this but you got it from the official source then make sure to add https://repo.litten.love to Cydia or Sileo."
-		preferredStyle:UIAlertControllerStyleAlert];
-
-		UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Okey" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
-
-			UIApplication* application = [UIApplication sharedApplication];
-			[application openURL:[NSURL URLWithString:@"https://repo.litten.love/"] options:@{} completionHandler:nil];
-
-	}];
-
-		[alertController addAction:cancelAction];
-
-		[self presentViewController:alertController animated:YES completion:nil];
-
-}
-
-%end
-
-%end
-
 %ctor {
-
-	dpkgInvalid = ![[NSFileManager defaultManager] fileExistsAtPath:@"/var/lib/dpkg/info/love.litten.nita.list"];
-
-    if (!dpkgInvalid) dpkgInvalid = ![[NSFileManager defaultManager] fileExistsAtPath:@"/var/lib/dpkg/info/love.litten.nita.md5sums"];
-
-    if (dpkgInvalid) {
-        %init(NitaIntegrityFail);
-        return;
-    }
 
 	preferences = [[HBPreferences alloc] initWithIdentifier:@"love.litten.nitapreferences"];
 
@@ -451,20 +412,11 @@ NSString* languageCode = nil; // language code to detect device language
 	[preferences registerBool:&refreshWeatherDataNotificationCenterSwitch default:NO forKey:@"refreshWeatherDataNotificationCenter"];
 	[preferences registerBool:&refreshWeatherDataDisplayWakeSwitch default:YES forKey:@"refreshWeatherDataDisplayWake"];
 
-	if (!dpkgInvalid && enabled) {
-        BOOL ok = false;
-        
-        ok = ([[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"/var/lib/dpkg/info/%@%@%@%@%@%@%@%@%@%@%@.nita.md5sums", @"l", @"o", @"v", @"e", @".", @"l", @"i", @"t", @"t", @"e", @"n"]]
-        );
-
-        if (ok && [@"litten" isEqualToString:@"litten"]) {
-			NSLocale* locale = [NSLocale autoupdatingCurrentLocale];
-			languageCode = locale.languageCode;
-			%init(Nita);
-            return;
-        } else {
-            dpkgInvalid = YES;
-        }
+	if (enabled) {
+		NSLocale* locale = [NSLocale autoupdatingCurrentLocale];
+		languageCode = locale.languageCode;
+		%init(Nita);
+        return;
     }
 
 }
