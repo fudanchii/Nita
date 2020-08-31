@@ -136,10 +136,13 @@ NSString* languageCode = nil; // language code to detect device language
 
 	// Fog
 	if ([conditions containsString:@"fog"] || [conditions containsString:@"Fog"]) {
-		if ([conditions containsString:@"Fog"])
-			weatherString = @"🌫";
-		else
-			weatherString = @"🌫";
+		weatherString = @"🌫";
+		return;
+	}
+
+	// Bad Air Quality
+	if ([conditions containsString:@"Unhealthy Air Quality"]) {
+		weatherString = @"🌫";
 		return;
 	}
 
@@ -226,7 +229,13 @@ NSString* languageCode = nil; // language code to detect device language
 	}
 
 	// Fog
-	if ([conditions containsString:@"brumeux"] || [conditions containsString:@"Brumeux"]) {
+	if ([conditions containsString:@"brouillard"] || [conditions containsString:@"Brouillard"]) {
+		weatherString = @"🌫";
+		return;
+	}
+
+	// Bad Air Quality
+	if ([conditions containsString:@"Qualité de l'air"]) {
 		weatherString = @"🌫";
 		return;
 	}
@@ -315,6 +324,12 @@ NSString* languageCode = nil; // language code to detect device language
 			weatherString = @"🌫";
 		else
 			weatherString = @"🌫";
+		return;
+	}
+
+	// Bad Air Quality
+	if ([conditions containsString:@"Ungesunde Luftqualität"]) {
+		weatherString = @"🌫";
 		return;
 	}
 
