@@ -69,6 +69,20 @@
 			<key>cell</key>
 			<string>PSSwitchCell</string>
 			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>love.litten.nitapreferences</string>
+			<key>key</key>
+			<string>replaceTime</string>
+			<key>label</key>
+			<string>Replace Time</string>
+			<key>PostNotification</key>
+			<string>love.litten.nitapreferences/ReloadPrefs</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
 			<true/>
 			<key>defaults</key>
 			<string>love.litten.nitapreferences</string>
@@ -90,55 +104,6 @@
 			<string>hideCellularSignal</string>
 			<key>label</key>
 			<string>Hide Cellular Signal</string>
-			<key>PostNotification</key>
-			<string>love.litten.nitapreferences/ReloadPrefs</string>
-		</dict>
-
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>label</key>
-			<string>When To Reload Weather Data?</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSSwitchCell</string>
-			<key>default</key>
-			<true/>
-			<key>defaults</key>
-			<string>love.litten.nitapreferences</string>
-			<key>key</key>
-			<string>refreshWeatherDataControlCenter</string>
-			<key>label</key>
-			<string>Control Center Opened</string>
-			<key>PostNotification</key>
-			<string>love.litten.nitapreferences/ReloadPrefs</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSSwitchCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>love.litten.nitapreferences</string>
-			<key>key</key>
-			<string>refreshWeatherDataNotificationCenter</string>
-			<key>label</key>
-			<string>Notification Center Appeared</string>
-			<key>PostNotification</key>
-			<string>love.litten.nitapreferences/ReloadPrefs</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSSwitchCell</string>
-			<key>default</key>
-			<true/>
-			<key>defaults</key>
-			<string>love.litten.nitapreferences</string>
-			<key>key</key>
-			<string>refreshWeatherDataDisplayWake</string>
-			<key>label</key>
-			<string>Display Woke</string>
 			<key>PostNotification</key>
 			<string>love.litten.nitapreferences/ReloadPrefs</string>
 		</dict>
@@ -213,27 +178,34 @@
 			<key>url</key>
 			<string>https://repo.litten.love/depictions/bty/</string>
 		</dict>
-		<dict>
-			<key>cellClass</key>
-			<string>HBLinkTableCell</string>
-			<key>label</key>
-			<string>Rose</string>
-			<key>subtitle</key>
-			<string>System Wide Haptics, Great uh-huh</string>
-			<key>icon</key>
-			<string>Rose.png</string>
-			<key>url</key>
-			<string>https://repo.litten.love/depictions/rse/</string>
-		</dict>
-
+		
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>footerText</key>
-			<string>Nita By Litten
-Artworks By taki</string>
+			<string>Nita By Litten, Artworks By taki</string>
 			<key>isStaticText</key>
 			<true/>
+		</dict>
+		<dict>
+			<key>cellClass</key>
+			<string>HBLinkTableCell</string>
+			<key>label</key>
+			<string>Discord</string>
+			<key>subtitle</key>
+			<string>Chat with us 👾</string>
+			<key>url</key>
+			<string>https://discord.com/invite/fPHN8KG</string>
+		</dict>
+		<dict>
+			<key>cellClass</key>
+			<string>HBLinkTableCell</string>
+			<key>label</key>
+			<string>Source Code</string>
+			<key>subtitle</key>
+			<string>GitHub ☀</string>
+			<key>url</key>
+			<string>https://github.com/Litteeen/Nita</string>
 		</dict>
 		<dict>
 			<key>cellClass</key>
@@ -245,22 +217,12 @@ Artworks By taki</string>
 			<key>url</key>
 			<string>https://paypal.me/Litteeen</string>
 		</dict>
-		<dict>
-			<key>cellClass</key>
-			<string>HBLinkTableCell</string>
-			<key>label</key>
-			<string>Source Code</string>
-			<key>subtitle</key>
-			<string>GitHub ☀️</string>
-			<key>url</key>
-			<string>https://github.com/Litteeen/Nita</string>
-		</dict>
 
 		<dict>
 			<key>cell</key>
 			<key>PSGroupCell</key>
 			<key>footerText</key>
-			<string>Made With 💜</string>
+			<string>princess of daydreaming</string>
 			<key>isStaticText</key>
 			<true/>
 			<key>footerAlignment</key>

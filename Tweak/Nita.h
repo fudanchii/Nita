@@ -11,13 +11,9 @@ BOOL showEmojiSwitch = NO;
 BOOL showTemperatureSwitch = NO;
 
 // Miscellaneous
+BOOL replaceTimeSwitch = NO;
 BOOL hideBreadcrumbsSwitch = YES;
 BOOL hideCellularSignalSwitch = YES;
-
-// Data Refreshing
-BOOL refreshWeatherDataControlCenterSwitch = YES;
-BOOL refreshWeatherDataNotificationCenterSwitch = NO;
-BOOL refreshWeatherDataDisplayWakeSwitch = YES;
 
 @interface _UIStatusBarStringView : UILabel
 @property(nonatomic, copy)NSString* originalText;

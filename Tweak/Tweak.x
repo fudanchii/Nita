@@ -25,10 +25,12 @@ NSString* languageCode = nil; // language code to detect device language
 
 - (void)setText:(id)arg1 {
 
-	%orig; // making sure originalText is being initialized before comparing it
+	%orig;
 
-	if (!([[self originalText] containsString:@":"] || [[self originalText] containsString:@"%"] || [[self originalText] containsString:@"2G"] || [[self originalText] containsString:@"3G"] || [[self originalText] containsString:@"4G"] || [[self originalText] containsString:@"5G"] || [[self originalText] containsString:@"LTE"] || [[self originalText] isEqualToString:@"E"] || [[self originalText] isEqualToString:@"e"])) {
+	[[PDDokdo sharedInstance] refreshWeatherData];
 
+	// don't replace time
+	if (!replaceTimeSwitch && !([[self originalText] containsString:@":"] || [[self originalText] containsString:@"%"] || [[self originalText] containsString:@"2G"] || [[self originalText] containsString:@"3G"] || [[self originalText] containsString:@"4G"] || [[self originalText] containsString:@"5G"] || [[self originalText] containsString:@"LTE"] || [[self originalText] isEqualToString:@"E"] || [[self originalText] isEqualToString:@"e"])) {
 		// detect device language and convert current condition to emoji
 		if ([languageCode containsString:@"en"])
 			[self enEmojis];
@@ -46,8 +48,27 @@ NSString* languageCode = nil; // language code to detect device language
 			%orig([NSString stringWithFormat:@"%@", [[PDDokdo sharedInstance] currentTemperature]]);
 		else
 			%orig(conditions);
-	} else {
-		return;
+	}
+
+	// replace time
+	if (replaceTimeSwitch && !([[self originalText] containsString:@"%"] || [[self originalText] containsString:@"2G"] || [[self originalText] containsString:@"3G"] || [[self originalText] containsString:@"4G"] || [[self originalText] containsString:@"5G"] || [[self originalText] containsString:@"LTE"] || [[self originalText] isEqualToString:@"E"] || [[self originalText] isEqualToString:@"e"])) {
+		// detect device language and convert current condition to emoji
+		if ([languageCode containsString:@"en"])
+			[self enEmojis];
+		else if ([languageCode containsString:@"fr"])
+			[self frEmojis];
+		else if ([languageCode containsString:@"de"])
+			[self deEmojis];
+
+		// assign the emoji (and optionally the temperature or only text) to the carrier
+		if (showEmojiSwitch && !showTemperatureSwitch)
+			%orig(weatherString);
+		else if (showEmojiSwitch && showTemperatureSwitch)
+			%orig([NSString stringWithFormat:@"%@ %@", weatherString, [[PDDokdo sharedInstance] currentTemperature]]); // that's why i use a variable for the condition, so i can easily add the temperature
+		else if (!showEmojiSwitch && showTemperatureSwitch)
+			%orig([NSString stringWithFormat:@"%@", [[PDDokdo sharedInstance] currentTemperature]]);
+		else
+			%orig(conditions);
 	}
 
 }
@@ -339,7 +360,7 @@ NSString* languageCode = nil; // language code to detect device language
 
 // Hide Breadcrumbs
 
-%hook SBDeviceApplicationSceneStatusBarBreadcrumbProvider // iOS 13
+%hook SBDeviceApplicationSceneStatusBarBreadcrumbProvider
 
 + (BOOL)_shouldAddBreadcrumbToActivatingSceneEntity:(id)arg1 sceneHandle:(id)arg2 withTransitionContext:(id)arg3 {
 
@@ -347,60 +368,6 @@ NSString* languageCode = nil; // language code to detect device language
 		return NO;
 	else
 		return %orig;
-
-}
-
-%end
-
-%hook SBMainDisplaySceneManager // iOS 12
-
-- (BOOL)_shouldBreadcrumbApplicationSceneEntity:(id)arg1 withTransitionContext:(id)arg2 {
-
-	if (hideBreadcrumbsSwitch)
-		return NO;
-	else
-		return %orig;
-
-}
-
-%end
-
-// Update Weather Data
-
-%hook SBControlCenterController // when opening control center
-
-- (void)_willPresent {
-
-	%orig;
-
-	if (refreshWeatherDataControlCenterSwitch)
-		[[PDDokdo sharedInstance] refreshWeatherData];
-
-}
-
-%end
-
-%hook SBCoverSheetPrimarySlidingViewController // when sliding down notitication center
-
-- (void)viewWillAppear:(BOOL)animated {
-
-	%orig;
-
-	if (refreshWeatherDataNotificationCenterSwitch)
-		[[PDDokdo sharedInstance] refreshWeatherData];
-
-}
-
-%end
-
-%hook SBBacklightController // when turning on screen
-
-- (void)turnOnScreenFullyWithBacklightSource:(long long)source {
-
-	%orig;
-
-	if (source != 26 && refreshWeatherDataDisplayWakeSwitch)
-		[[PDDokdo sharedInstance] refreshWeatherData];
 
 }
 
@@ -419,13 +386,9 @@ NSString* languageCode = nil; // language code to detect device language
 	[preferences registerBool:&showTemperatureSwitch default:NO forKey:@"showTemperature"];
 
 	// Miscellaneous
+	[preferences registerBool:&replaceTimeSwitch default:NO forKey:@"replaceTime"];
 	[preferences registerBool:&hideBreadcrumbsSwitch default:YES forKey:@"hideBreadcrumbs"];
 	[preferences registerBool:&hideCellularSignalSwitch default:NO forKey:@"hideCellularSignal"];
-
-	// Data Refreshing
-	[preferences registerBool:&refreshWeatherDataControlCenterSwitch default:YES forKey:@"refreshWeatherDataControlCenter"];
-	[preferences registerBool:&refreshWeatherDataNotificationCenterSwitch default:NO forKey:@"refreshWeatherDataNotificationCenter"];
-	[preferences registerBool:&refreshWeatherDataDisplayWakeSwitch default:YES forKey:@"refreshWeatherDataDisplayWake"];
 
 	if (enabled) {
 		NSLocale* locale = [NSLocale autoupdatingCurrentLocale];
