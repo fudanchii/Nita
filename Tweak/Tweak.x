@@ -2,41 +2,23 @@
 
 BOOL enabled;
 
-NSString* conditions = nil; // weather condition which will be converted to an emoji
-NSString* weatherString = nil; // emoji will be assigned to this variable
-NSString* languageCode = nil; // language code to detect device language
-
-@interface WACurrentForecast : NSObject
-@property (assign,nonatomic) long long conditionCode;
--(void)setConditionCode:(long long)arg1 ;
-@end
-
-@interface WAForecastModel : NSObject
-@property (nonatomic,retain) WACurrentForecast * currentConditions;
-@end
-
-@interface WALockscreenWidgetViewController : UIViewController
--(WAForecastModel *)currentForecastModel;
-@end
-
-@interface PDDokdo (Private)
-@property (nonatomic, retain, readonly) WALockscreenWidgetViewController *weatherWidget;
- -(void)getConditions ;
-@end
-
 @implementation PDDokdo (Private)
-@dynamic weatherWidget;
-	-(void)getConditions {
-		WALockscreenWidgetViewController *weatherWidget = [self weatherWidget];
-		WAForecastModel *currentModel = [weatherWidget currentForecastModel];
-		WACurrentForecast *currentCond = [currentModel currentConditions];
 
-		for (int i = 0; i < 50; i++) {
-			[currentCond setConditionCode:i];
-			[self refreshWeatherData];
-			NSLog(@"Nita - currentCode = %d, currentCondition = %@", i, [self currentConditions]);
-		}
+@dynamic weatherWidget;
+
+- (void)getConditions {
+
+	WALockscreenWidgetViewController* weatherWidget = [self weatherWidget];
+	WAForecastModel* currentModel = [weatherWidget currentForecastModel];
+	WACurrentForecast* currentCond = [currentModel currentConditions];
+
+	for (int i = 0; i < 50; i++) {
+		[currentCond setConditionCode:i];
+		[self refreshWeatherData];
 	}
+
+}
+
 @end
 
 %group Nita
@@ -96,14 +78,12 @@ NSString* languageCode = nil; // language code to detect device language
 
 }
 
-// libPDDokdo currently only returns the condition in the language which the device has set so i have to convert it myself
-
-// English
 %new
 - (void)getEmojis {
-	WALockscreenWidgetViewController *weatherWidget = [[PDDokdo sharedInstance] weatherWidget];
-	WAForecastModel *currentModel = [weatherWidget currentForecastModel];
-	WACurrentForecast *currentCond = [currentModel currentConditions];
+
+	WALockscreenWidgetViewController* weatherWidget = [[PDDokdo sharedInstance] weatherWidget];
+	WAForecastModel* currentModel = [weatherWidget currentForecastModel];
+	WACurrentForecast* currentCond = [currentModel currentConditions];
 	NSInteger currentCode = [currentCond conditionCode];
 
 	if (currentCode <= 2)
@@ -150,6 +130,7 @@ NSString* languageCode = nil; // language code to detect device language
 		weatherString = @"🌨";
 	else
 		weatherString = @"N/A";
+
 }
 
 %end
@@ -175,7 +156,7 @@ NSString* languageCode = nil; // language code to detect device language
 
 	preferences = [[HBPreferences alloc] initWithIdentifier:@"love.litten.nitapreferences"];
 
-  [preferences registerBool:&enabled default:nil forKey:@"Enabled"];
+  	[preferences registerBool:&enabled default:nil forKey:@"Enabled"];
 
 	if (enabled) {
 		// Visibility
@@ -188,6 +169,6 @@ NSString* languageCode = nil; // language code to detect device language
 		[preferences registerBool:&hideCellularSignalSwitch default:NO forKey:@"hideCellularSignal"];
 		
 		%init(Nita);
-  }
+  	}
 
 }

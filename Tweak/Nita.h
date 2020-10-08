@@ -20,10 +20,32 @@ BOOL hideCellularSignalSwitch = YES;
 - (void)getEmojis;
 @end
 
+NSString* conditions = nil; // weather condition which will be converted to an emoji
+NSString* weatherString = nil; // emoji will be assigned to this variable
+
+@interface WACurrentForecast : NSObject
+@property(assign, nonatomic)long long conditionCode;
+- (void)setConditionCode:(long long)arg1;
+@end
+
+@interface WAForecastModel : NSObject
+@property(nonatomic,retain) WACurrentForecast* currentConditions;
+@end
+
+@interface WALockscreenWidgetViewController : UIViewController
+- (WAForecastModel *)currentForecastModel;
+@end
+
+@interface PDDokdo (Private)
+@property(nonatomic, retain, readonly)WALockscreenWidgetViewController* weatherWidget;
+- (void)getConditions;
+@end
+
 @interface _UIStatusBarCellularSignalView : UIView
 @end
 
 /*
+
 Weather Codes:
 
 Nita - currentCode = 0, currentCondition = Wirbelsturm
@@ -70,6 +92,5 @@ Nita - currentCode = 40, currentCondition = Starker Regen
 Nita - currentCode = 41, currentCondition = Vereinzelte Schneeschauer
 Nita - currentCode = 42, currentCondition = Starker Schneefall
 Nita - currentCode = 43, currentCondition = Schneesturm
-
 
 */
