@@ -2,25 +2,6 @@
 
 BOOL enabled;
 
-@implementation PDDokdo (Private)
-
-@dynamic weatherWidget;
-
-- (void)getConditions {
-
-	WALockscreenWidgetViewController* weatherWidget = [self weatherWidget];
-	WAForecastModel* currentModel = [weatherWidget currentForecastModel];
-	WACurrentForecast* currentCond = [currentModel currentConditions];
-
-	for (int i = 0; i < 50; i++) {
-		[currentCond setConditionCode:i];
-		[self refreshWeatherData];
-	}
-
-}
-
-@end
-
 %group Nita
 
 %hook _UIStatusBarCellularSignalView
