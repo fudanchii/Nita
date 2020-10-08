@@ -83,13 +83,6 @@ BOOL hasSeenLanguageCompatibilityAlert = NO;
 
     _table.tableHeaderView = self.headerView;
 
-    NSLocale* locale = [NSLocale autoupdatingCurrentLocale];
-	NSString* code = locale.languageCode;
-
-    if (![code containsString:@"en"] && ![code containsString:@"fr"] && ![code containsString:@"de"] && !hasSeenLanguageCompatibilityAlert) {
-        [self incompatibleLanguageAlert];
-    }
-
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -244,10 +237,9 @@ BOOL hasSeenLanguageCompatibilityAlert = NO;
 
 - (void)resetPreferences {
 
-    HBPreferences *preferences = [[HBPreferences alloc] initWithIdentifier: @"love.litten.nitapreferences"];
-    for (NSString *key in [preferences dictionaryRepresentation]) {
+    HBPreferences* preferences = [[HBPreferences alloc] initWithIdentifier: @"love.litten.nitapreferences"];
+    for (NSString* key in [preferences dictionaryRepresentation]) {
         [preferences removeObjectForKey:key];
-
     }
     
     [[self enableSwitch] setOn:NO animated: YES];
