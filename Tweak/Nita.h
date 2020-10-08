@@ -38,7 +38,6 @@ NSString* weatherString = nil; // emoji will be assigned to this variable
 
 @interface PDDokdo (Private)
 @property(nonatomic, retain, readonly)WALockscreenWidgetViewController* weatherWidget;
-- (void)getConditions;
 @end
 
 @interface _UIStatusBarCellularSignalView : UIView
