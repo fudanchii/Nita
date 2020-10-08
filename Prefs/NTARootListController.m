@@ -109,15 +109,6 @@ BOOL hasSeenLanguageCompatibilityAlert = NO;
     self.navigationController.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationController.navigationBar.translucent = YES;
 
-    HBPreferences *preferences = [[HBPreferences alloc] initWithIdentifier: @"love.litten.nitapreferences"];
-    hasSeenLanguageCompatibilityAlert = [preferences objectForKey:@"hasSeenLanguageCompatibilityAlert"];
-
-    NSLocale* locale = [NSLocale autoupdatingCurrentLocale];
-	NSString* code = locale.languageCode;
-
-    if (![code containsString:@"en"] && ![code containsString:@"fr"] && ![code containsString:@"de"])
-        [self setCellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0] enabled:NO];
-
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -128,8 +119,29 @@ BOOL hasSeenLanguageCompatibilityAlert = NO;
 
     [self setEnableSwitchState];
 
-    if ([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/Nita.disabled"])
-        [self disabledAlert];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/Nita.disabled"]) return;
+    [[self enableSwitch] setEnabled:NO];
+
+    UIAlertController* alertController = [UIAlertController alertControllerWithTitle:@"Nita"
+	message:@"Nita Preferences disabled due to Nita being disabled with iCleaner Pro"
+	preferredStyle:UIAlertControllerStyleAlert];
+	
+    UIAlertAction* resetAction = [UIAlertAction actionWithTitle:@"Reset Preferences" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+			
+        [self resetPreferences];
+
+	}];
+
+    UIAlertAction* confirmAction = [UIAlertAction actionWithTitle:@"Okey" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+			
+        [[self navigationController] popViewControllerAnimated:YES];
+
+	}];
+
+	[alertController addAction:confirmAction];
+    [alertController addAction:resetAction];
+
+	[self presentViewController:alertController animated:YES completion:nil];
 
 }
 
@@ -209,26 +221,6 @@ BOOL hasSeenLanguageCompatibilityAlert = NO;
 
 }
 
-- (void)incompatibleLanguageAlert {
-
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Nita"
-	message:@"I'm sorry, but your language isn't supported yet to use the Emoji feature 🙍🏼‍♀️ You can still use Temperature and/or only text though! 😅"
-	preferredStyle:UIAlertControllerStyleAlert];
-
-	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Don't show again" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
-
-        hasSeenLanguageCompatibilityAlert = YES;
-        HBPreferences* preferences = [[HBPreferences alloc] initWithIdentifier: @"love.litten.nitapreferences"];
-        [preferences setBool:hasSeenLanguageCompatibilityAlert forKey:@"hasSeenLanguageCompatibilityAlert"];
-
-	}];
-    
-    [alertController addAction:cancelAction];
-
-	[self presentViewController:alertController animated:YES completion:nil];
-
-}
-
 - (void)resetPrompt {
 
     UIAlertController *resetAlert = [UIAlertController alertControllerWithTitle:@"Nita"
@@ -247,31 +239,6 @@ BOOL hasSeenLanguageCompatibilityAlert = NO;
 	[resetAlert addAction:cancelAction];
 
 	[self presentViewController:resetAlert animated:YES completion:nil];
-
-}
-
-- (void)disabledAlert {
-
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Nita"
-	message:@"It Looks Like You Disabled Nita In iCleaner Pro, Nita Won't Work In This State"
-	preferredStyle:UIAlertControllerStyleAlert];
-
-    UIAlertAction *resetAction = [UIAlertAction actionWithTitle:@"Reset Preferences" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
-
-        [self resetPreferences];
-
-	}];
-
-	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
-
-        exit(0);
-
-	}];
-
-	[alertController addAction:resetAction];
-    [alertController addAction:cancelAction];
-
-	[self presentViewController:alertController animated:YES completion:nil];
 
 }
 
