@@ -23,8 +23,6 @@ BOOL enabled;
 
 	%orig;
 
-	[[PDDokdo sharedInstance] refreshWeatherData];
-
 	// don't replace time
 	if (!replaceTimeSwitch && !([[self originalText] containsString:@":"] || [[self originalText] containsString:@"%"] || [[self originalText] containsString:@"2G"] || [[self originalText] containsString:@"3G"] || [[self originalText] containsString:@"4G"] || [[self originalText] containsString:@"5G"] || [[self originalText] containsString:@"LTE"] || [[self originalText] isEqualToString:@"E"] || [[self originalText] isEqualToString:@"e"])) {
 		
@@ -126,6 +124,42 @@ BOOL enabled;
 		return NO;
 	else
 		return %orig;
+
+}
+
+%end
+
+%hook SBControlCenterController // update data when opening control center
+
+- (void)_willPresent {
+
+	%orig;
+
+	[[PDDokdo sharedInstance] refreshWeatherData];
+
+}
+
+%end
+
+%hook SBCoverSheetPrimarySlidingViewController // update data when sliding down notitication center
+
+- (void)viewWillAppear:(BOOL)animated {
+
+	%orig;
+
+	[[PDDokdo sharedInstance] refreshWeatherData];
+
+}
+
+%end
+
+%hook SBBacklightController // update data when turning on screen
+
+- (void)turnOnScreenFullyWithBacklightSource:(long long)source {
+
+	%orig;
+
+	[[PDDokdo sharedInstance] refreshWeatherData];
 
 }
 

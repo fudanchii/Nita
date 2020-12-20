@@ -3,7 +3,9 @@
 #import "../Tweak/Nita.h"
 
 BOOL enabled = NO;
-BOOL hasSeenLanguageCompatibilityAlert = NO;
+
+UIBlurEffect* blur;
+UIVisualEffectView* blurView;
 
 @implementation NTARootListController
 
@@ -24,7 +26,7 @@ BOOL hasSeenLanguageCompatibilityAlert = NO;
         self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,10,10)];
         self.titleLabel.font = [UIFont boldSystemFontOfSize:17];
         self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        self.titleLabel.text = @"1.4.1";
+        self.titleLabel.text = @"1.4.2";
         self.titleLabel.textColor = [UIColor whiteColor];
         self.titleLabel.textAlignment = NSTextAlignmentCenter;
         [self.navigationItem.titleView addSubview:self.titleLabel];
@@ -179,19 +181,19 @@ BOOL hasSeenLanguageCompatibilityAlert = NO;
     if (!([[NSFileManager defaultManager] fileExistsAtPath:@"/var/mobile/Library/Preferences/love.litten.nitapreferences.plist"])) {
         enabled = YES;
         [preferences setBool:enabled forKey:@"Enabled"];
-        [self respringUtil];
+        [self respring];
     } else if (!([allKeys containsObject:@"Enabled"])) {
         enabled = YES;
         [preferences setBool:enabled forKey:@"Enabled"];
-        [self respringUtil];
+        [self respring];
     } else if ([[preferences objectForKey:@"Enabled"] isEqual:@(NO)]) {
         enabled = YES;
         [preferences setBool:enabled forKey:@"Enabled"];
-        [self respringUtil];
+        [self respring];
     } else if ([[preferences objectForKey:@"Enabled"] isEqual:@(YES)]) {
         enabled = NO;
         [preferences setBool:enabled forKey:@"Enabled"];
-        [self respringUtil];
+        [self respring];
     }
 
 }
@@ -243,7 +245,23 @@ BOOL hasSeenLanguageCompatibilityAlert = NO;
     }
     
     [[self enableSwitch] setOn:NO animated: YES];
-    [self respringUtil];
+    [self respring];
+
+}
+
+- (void)respring {
+
+    blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
+    blurView = [[UIVisualEffectView alloc] initWithEffect:blur];
+    [blurView setFrame:self.view.bounds];
+    [blurView setAlpha:0.0];
+    [[self view] addSubview:blurView];
+
+    [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        [blurView setAlpha:1.0];
+    } completion:^(BOOL finished) {
+        [self respringUtil];
+    }];
 
 }
 
