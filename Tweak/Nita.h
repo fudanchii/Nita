@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 #import <Cephei/HBPreferences.h>
-#import "libpddokdo.h"
+#import <PeterDev/libpddokdo.h>
 
 HBPreferences* preferences;
 
